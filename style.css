@@ -415,11 +415,13 @@ html, body {
 
 .slip-name {
   font-family: var(--font-serif);
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   color: #0c2d48;
-  margin: 2px 0;
+  margin: 4px 0 2px;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .slip-date {
