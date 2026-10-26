@@ -582,6 +582,50 @@ html, body {
   margin-bottom: 6px;
 }
 
+/* DESTAQUE 18 ANOS DA MARI */
+.age-badge-highlight {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px auto 10px;
+  padding: 6px 18px;
+  background: linear-gradient(135deg, #0f2b48 0%, #1e40af 50%, #0284c7 100%);
+  border-radius: 30px;
+  box-shadow: 
+    0 4px 15px rgba(2, 132, 199, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.4);
+  animation: pulseBadge 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulseBadge {
+  0% { transform: scale(1); box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35); }
+  100% { transform: scale(1.04); box-shadow: 0 6px 20px rgba(56, 189, 248, 0.55); }
+}
+
+.age-badge-text {
+  font-family: var(--font-title);
+  font-size: 15px;
+  letter-spacing: 3px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.sparkle-left, .sparkle-right {
+  font-size: 13px;
+  animation: sparkleTwinkle 1.8s infinite alternate ease-in-out;
+}
+
+.sparkle-right {
+  animation-delay: 0.9s;
+}
+
+@keyframes sparkleTwinkle {
+  0% { opacity: 0.5; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.15); }
+}
+
 .celebration-title {
   font-family: var(--font-serif);
   font-size: 30px;
