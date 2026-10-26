@@ -1,0 +1,896 @@
+/* RESET & BASE */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --primary-deep: #0a192f;
+  --navy-blue: #0f2b48;
+  --royal-blue: #1e40af;
+  --medium-blue: #2563eb;
+  --ocean-cyan: #38bdf8;
+  --soft-blue: #e0f2fe;
+  --silver-bright: #ffffff;
+  --silver-mid: #cbd5e1;
+  --silver-glow: rgba(226, 232, 240, 0.7);
+  --text-dark: #0f172a;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-title: 'Cinzel', serif;
+  --font-sans: 'Montserrat', -apple-system, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background-color: #dbeafe;
+  color: var(--primary-deep);
+  position: relative;
+}
+
+/* BOTÃO DE CONTROLE DE SOM AMBIENTE FLUTUANTE */
+.sound-toggle-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #0c4a6e;
+  padding: 7px 14px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(12, 74, 110, 0.12);
+  transition: all 0.3s ease;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sound-toggle-btn:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(12, 74, 110, 0.2);
+}
+
+.sound-label {
+  letter-spacing: 0.5px;
+}
+
+.sound-wave-anim {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+
+.sound-toggle-btn.playing .sound-wave-anim {
+  display: flex;
+}
+
+.sound-wave-anim span {
+  width: 2px;
+  height: 100%;
+  background-color: #0284c7;
+  border-radius: 2px;
+  animation: soundBars 1.2s ease-in-out infinite alternate;
+}
+
+.sound-wave-anim span:nth-child(2) { animation-delay: 0.2s; height: 70%; }
+.sound-wave-anim span:nth-child(3) { animation-delay: 0.4s; height: 90%; }
+
+@keyframes soundBars {
+  0% { transform: scaleY(0.3); }
+  100% { transform: scaleY(1); }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* OCEANO DE FUNDO SUAVE */
+.ocean-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.water-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, #eff6ff 0%, #dbeafe 45%, #bfdbfe 75%, #93c5fd 100%);
+}
+
+.caustic-layer {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 65%, rgba(56, 189, 248, 0.15) 0%, transparent 50%);
+  animation: waterShimmer 8s ease-in-out infinite alternate;
+}
+
+@keyframes waterShimmer {
+  0% { transform: scale(1) translateY(0); opacity: 0.7; }
+  100% { transform: scale(1.05) translateY(-10px); opacity: 1; }
+}
+
+#bubbles-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ELEMENTOS DECORATIVOS MARINHOS (ESTILO AQUARELA) */
+.marine-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.marine-elem {
+  position: absolute;
+  filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.12));
+}
+
+/* Sereia superior esquerda */
+.mermaid-tail {
+  top: -15px;
+  left: -15px;
+  width: 150px;
+  height: 130px;
+  animation: floatMermaid 7s ease-in-out infinite alternate;
+}
+
+@keyframes floatMermaid {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  100% { transform: rotate(3deg) translate(6px, 8px); }
+}
+
+/* Concha nautilus superior direita */
+.nautilus-shell {
+  top: -20px;
+  right: -20px;
+  width: 140px;
+  height: 130px;
+  animation: floatShell 9s ease-in-out infinite alternate;
+}
+
+@keyframes floatShell {
+  0% { transform: rotate(0deg) translateY(0); }
+  100% { transform: rotate(-4deg) translateY(6px); }
+}
+
+/* Estrela topo direita */
+.starfish-top-right {
+  top: 190px;
+  right: 5px;
+  width: 95px;
+  height: 95px;
+  animation: floatStar 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatStar {
+  0% { transform: rotate(15deg) scale(0.96); }
+  100% { transform: rotate(22deg) scale(1.04); }
+}
+
+/* Concha pecten lateral esquerda */
+.scallop-left {
+  top: 480px;
+  left: 10px;
+  width: 75px;
+  height: 75px;
+  animation: floatScallop 8s ease-in-out infinite alternate;
+}
+
+@keyframes floatScallop {
+  0% { transform: rotate(-10deg) translateY(0); }
+  100% { transform: rotate(-5deg) translateY(-8px); }
+}
+
+/* Parte inferior com corais e estrela */
+.bottom-corals {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+}
+
+.big-starfish {
+  position: absolute;
+  bottom: 10px;
+  left: 45px;
+  width: 125px;
+  height: 125px;
+  transform: rotate(-12deg);
+  animation: pulseStar 5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseStar {
+  0% { transform: rotate(-12deg) scale(1); }
+  100% { transform: rotate(-9deg) scale(1.05); }
+}
+
+.bottom-shell-left {
+  position: absolute;
+  bottom: 60px;
+  left: 5px;
+  width: 70px;
+  height: 70px;
+  transform: rotate(20deg);
+}
+
+.bottom-corals-svg {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 160px;
+  height: 120px;
+}
+
+/* Pérolas cintilantes */
+.pearl {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 45%, #94a3b8 85%, #64748b 100%);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 12px rgba(255,255,255,0.8);
+}
+.pearl-1 { width: 20px; height: 20px; bottom: 85px; left: 110px; }
+.pearl-2 { width: 14px; height: 14px; bottom: 25px; left: 195px; }
+.pearl-3 { width: 10px; height: 10px; bottom: 45px; left: 180px; }
+.pearl-4 { width: 16px; height: 16px; bottom: 20px; right: 155px; }
+
+/* CONTAINER PRINCIPAL */
+.app-container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 16px 20px;
+}
+
+/* 1. TELA DO ENVELOPE */
+.envelope-screen {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.envelope-screen.fade-out {
+  opacity: 0;
+  transform: scale(0.9) translateY(-30px);
+  pointer-events: none;
+}
+
+.envelope-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.title-convite {
+  font-family: var(--font-title);
+  font-size: 26px;
+  letter-spacing: 5px;
+  font-weight: 700;
+  color: #0c2d48;
+  text-shadow: 0 2px 4px rgba(255,255,255,0.8), 0 2px 10px rgba(12, 45, 72, 0.15);
+}
+
+.envelope-card-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* ESTRUTURA DO ENVELOPE AZUL REAL */
+.envelope-box {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  background: #2b5b84;
+  border-radius: 6px;
+  box-shadow: 
+    0 15px 35px rgba(11, 44, 76, 0.35),
+    0 4px 10px rgba(0,0,0,0.12),
+    inset 0 1px 1px rgba(255,255,255,0.2);
+  perspective: 1000px;
+}
+
+/* Aba superior */
+.envelope-flap.top-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  border-top: 120px solid #244e73;
+  transform-origin: top;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.3s;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+}
+
+.envelope-box.open .envelope-flap.top-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+/* Bolsão do Envelope (Laterais e Fundo) */
+.envelope-pocket {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.envelope-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid #204566;
+  border-top: 110px solid transparent;
+  border-bottom: 110px solid transparent;
+}
+
+.envelope-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-right: 160px solid #1c3d5a;
+  border-top: 110px solid transparent;
+  border-bottom: 110px solid transparent;
+}
+
+.envelope-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 160px solid transparent;
+  border-right: 160px solid transparent;
+  border-bottom: 125px solid #2b5b84;
+}
+
+/* Prévia da carta */
+.letter-slip {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 20px;
+  height: 180px;
+  background: #ffffff;
+  border-radius: 4px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s;
+  border: 1px solid #e2e8f0;
+}
+
+.slip-header {
+  font-family: var(--font-title);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.slip-date {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.envelope-box.open .letter-slip {
+  transform: translateY(-90px);
+}
+
+/* Lacre de Concha */
+.envelope-seal-wrapper {
+  position: absolute;
+  top: 105px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.envelope-box.open .envelope-seal-wrapper {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.3);
+  pointer-events: none;
+}
+
+.shell-seal {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+  transition: transform 0.3s ease;
+}
+
+.envelope-card-wrapper:hover .shell-seal {
+  transform: scale(1.08);
+}
+
+.seal-pulsing-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  animation: sealPulse 2s infinite ease-out;
+}
+
+@keyframes sealPulse {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.envelope-hint {
+  margin-top: 28px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #334155;
+  text-align: center;
+  animation: hintBreathe 2.5s ease-in-out infinite;
+}
+
+@keyframes hintBreathe {
+  0%, 100% { opacity: 0.75; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* 2. TELA DO CARTÃO COMPLETO */
+.invitation-card-screen {
+  width: 100%;
+  max-width: 460px;
+  animation: cardEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  margin: auto;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.invitation-card-screen.hidden {
+  display: none;
+}
+
+.card-inner {
+  position: relative;
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  padding: 38px 26px 32px;
+  box-shadow: 
+    0 25px 60px rgba(15, 43, 72, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  text-align: center;
+  overflow: hidden;
+}
+
+.card-border-silver {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+/* Botão voltar */
+.btn-back {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  background: rgba(241, 245, 249, 0.85);
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font-size: 11px;
+  font-family: var(--font-sans);
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.btn-back:hover {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* Topo do cartão */
+.seal-icon-mini {
+  margin: 0 auto 12px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+}
+
+.tagline {
+  font-size: 10.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #0284c7;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.celebration-title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  line-height: 1.15;
+  color: #0c2d48;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.theme-subtitle {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.divider-silver {
+  margin: 18px auto;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.divider-silver::before, .divider-silver::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #94a3b8, transparent);
+  margin: 0 8px;
+}
+
+/* Bloco de Data e Horário */
+.datetime-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: linear-gradient(145deg, #f0f9ff, #e0f2fe);
+  border: 1px solid #bae6fd;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.06);
+}
+
+.date-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 18px;
+  border-right: 1px solid #93c5fd;
+}
+
+.day-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #0369a1;
+}
+
+.big-date {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 2px 0;
+}
+
+.day-number {
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 700;
+  color: #0c4a6e;
+  line-height: 1;
+}
+
+.month-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #0284c7;
+}
+
+.year-label {
+  font-size: 11px;
+  color: #64748b;
+  letter-spacing: 2px;
+}
+
+.time-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #0284c7;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.time-sub {
+  font-size: 10px;
+  color: #64748b;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+/* Local / Salão */
+.venue-block {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  gap: 14px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.venue-icon {
+  color: #0284c7;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.venue-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  color: #0f172a;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.venue-address {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.venue-city {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Contagem Regressiva */
+.countdown-card {
+  margin-bottom: 24px;
+}
+
+.countdown-title {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.countdown-boxes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cd-box {
+  background: #0f2b48;
+  color: #ffffff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  min-width: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(15, 43, 72, 0.25);
+}
+
+.cd-val {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: #7dd3fc;
+}
+
+.cd-lbl {
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+.cd-sep {
+  font-weight: 700;
+  color: #0284c7;
+  font-size: 16px;
+}
+
+/* BOTÕES DE AÇÃO */
+.action-buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0369a1, #075985);
+  box-shadow: 0 8px 22px rgba(2, 132, 199, 0.45);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #0c4a6e;
+  border: 1px solid #bae6fd;
+}
+
+.btn-secondary:hover {
+  background: #f0f9ff;
+  border-color: #7dd3fc;
+}
+
+/* Rodapé */
+.card-footer p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: #475569;
+}
+
+.ocean-wave-line {
+  margin: 14px auto 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+  .sound-toggle-btn {
+    top: 12px;
+    right: 12px;
+    padding: 6px 11px;
+    font-size: 11px;
+  }
+
+  .envelope-box {
+    width: 290px;
+    height: 200px;
+  }
+  .envelope-flap.top-flap {
+    border-left-width: 145px;
+    border-right-width: 145px;
+    border-top-width: 110px;
+  }
+  .envelope-left {
+    border-left-width: 145px;
+    border-top-width: 100px;
+    border-bottom-width: 100px;
+  }
+  .envelope-right {
+    border-right-width: 145px;
+    border-top-width: 100px;
+    border-bottom-width: 100px;
+  }
+  .envelope-bottom {
+    border-left-width: 145px;
+    border-right-width: 145px;
+    border-bottom-width: 115px;
+  }
+  
+  .card-inner {
+    padding: 32px 18px 26px;
+  }
+  .celebration-title {
+    font-size: 26px;
+  }
+  .day-number {
+    font-size: 32px;
+  }
+}

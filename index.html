@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Convite Especial | Fundo do Mar</title>
+  
+  <!-- Fontes Google elegantes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Áudio Ambiente: Som Suave do Oceano & Ondas -->
+  <audio id="ocean-audio" loop preload="auto">
+    <source src="assets/ocean-ambient.m4a" type="audio/mp4">
+    <source src="assets/ocean-ambient.wav" type="audio/wav">
+  </audio>
+
+  <!-- Botão de Controle de Som Ambiente Flutuante -->
+  <button id="sound-toggle" class="sound-toggle-btn" aria-label="Ligar ou desligar som do oceano">
+    <span class="sound-wave-anim">
+      <span></span><span></span><span></span>
+    </span>
+    <svg class="icon-sound-on" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+    <svg class="icon-sound-off hidden" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+    </svg>
+    <span class="sound-label">Som do Oceano</span>
+  </button>
+
+  <!-- Efeitos de Fundo: Bolhas e Brilhos Subaquáticos -->
+  <div class="ocean-bg">
+    <div class="water-gradient"></div>
+    <div class="caustic-layer"></div>
+    <canvas id="bubbles-canvas"></canvas>
+  </div>
+
+  <!-- ELEMENTOS DECORATIVOS MARINHOS (Aquarela & Prata) -->
+  <div class="marine-decorations">
+    <!-- Canto Superior Esquerdo: Cauda de Sereia azul cobalto -->
+    <div class="marine-elem mermaid-tail">
+      <svg viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M145 130 C120 110, 80 80, 50 60 C35 50, 15 35, 10 15 C8 10, 12 5, 20 10 C35 20, 55 45, 75 40 C95 35, 110 15, 125 5 C130 2, 133 6, 130 12 C120 30, 95 60, 115 85 C125 98, 148 115, 152 125 C154 130, 150 133, 145 130 Z" fill="url(#mermaidGrad)" opacity="0.88" filter="url(#glowFilter)"/>
+        <path d="M40 55 C65 72, 95 95, 120 115" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3 4"/>
+        <defs>
+          <linearGradient id="mermaidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0b3c6d"/>
+            <stop offset="45%" stop-color="#1d639b"/>
+            <stop offset="85%" stop-color="#4ba3e3"/>
+            <stop offset="100%" stop-color="#e0f2fe"/>
+          </linearGradient>
+          <filter id="glowFilter">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0284c7" flood-opacity="0.3"/>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Canto Superior Direito: Concha Náutilo / Caramujo azul -->
+    <div class="marine-elem nautilus-shell">
+      <svg viewBox="0 0 160 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="85" cy="75" r="55" fill="url(#shellGrad)" opacity="0.85" />
+        <path d="M85 75 m-50,0 a50,50 0 1,0 100,0 a50,50 0 1,0 -100,0" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+        <path d="M85 75 m-36,0 a36,36 0 1,0 72,0 a36,36 0 1,0 -72,0" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+        <path d="M85 75 m-24,0 a24,24 0 1,0 48,0 a24,24 0 1,0 -48,0" stroke="rgba(255,255,255,0.6)" stroke-width="1.8"/>
+        <path d="M85 75 m-14,0 a14,14 0 1,0 28,0 a14,14 0 1,0 -28,0" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <path d="M85 75 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" fill="#e0f2fe"/>
+        <defs>
+          <radialGradient id="shellGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="35%" stop-color="#7dd3fc"/>
+            <stop offset="70%" stop-color="#0284c7"/>
+            <stop offset="100%" stop-color="#033d6b"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Estrela do mar flutuante à direita -->
+    <div class="marine-elem starfish-top-right">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="60,5 74,42 114,44 83,69 94,107 60,85 26,107 37,69 6,44 46,42" fill="url(#starGrad)" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linejoin="round" filter="url(#silverShine)"/>
+        <circle cx="60" cy="58" r="3" fill="#ffffff"/>
+        <circle cx="60" cy="40" r="2" fill="#ffffff"/>
+        <circle cx="60" cy="22" r="1.5" fill="#ffffff"/>
+        <circle cx="78" cy="52" r="2" fill="#ffffff"/>
+        <circle cx="95" cy="52" r="1.5" fill="#ffffff"/>
+        <circle cx="42" cy="52" r="2" fill="#ffffff"/>
+        <circle cx="25" cy="52" r="1.5" fill="#ffffff"/>
+        <circle cx="50" cy="75" r="2" fill="#ffffff"/>
+        <circle cx="40" cy="92" r="1.5" fill="#ffffff"/>
+        <circle cx="70" cy="75" r="2" fill="#ffffff"/>
+        <circle cx="80" cy="92" r="1.5" fill="#ffffff"/>
+        <defs>
+          <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e3a8a"/>
+            <stop offset="40%" stop-color="#2563eb"/>
+            <stop offset="75%" stop-color="#60a5fa"/>
+            <stop offset="100%" stop-color="#93c5fd"/>
+          </linearGradient>
+          <filter id="silverShine">
+            <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#0369a1" flood-opacity="0.35"/>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Concha Pecten lateral esquerda -->
+    <div class="marine-elem scallop-left">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 90 C15 90, 5 60, 10 35 C15 15, 35 5, 50 5 C65 5, 85 15, 90 35 C95 60, 85 90, 50 90 Z" fill="url(#scallopGrad)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+        <path d="M50 88 L50 6" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+        <path d="M50 88 L28 15" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/>
+        <path d="M50 88 L72 15" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/>
+        <path d="M50 88 L14 36" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <path d="M50 88 L86 36" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <defs>
+          <linearGradient id="scallopGrad" x1="50%" y1="100%" x2="50%" y2="0%">
+            <stop offset="0%" stop-color="#0e3a60"/>
+            <stop offset="60%" stop-color="#5fa5d8"/>
+            <stop offset="100%" stop-color="#f0f9ff"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Fundo Inferior: Corais, Algas, Pérolas e Estrela Grande -->
+    <div class="marine-elem bottom-corals">
+      <!-- Pérolas prateadas brilhantes -->
+      <div class="pearl pearl-1"></div>
+      <div class="pearl pearl-2"></div>
+      <div class="pearl pearl-3"></div>
+      <div class="pearl pearl-4"></div>
+      
+      <!-- Estrela do mar grande inferior -->
+      <div class="big-starfish">
+        <svg viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="75,8 92,54 142,56 104,87 118,135 75,108 32,135 46,87 8,56 58,54" fill="url(#bottomStarGrad)" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linejoin="round" filter="url(#bigStarShadow)"/>
+          <circle cx="75" cy="72" r="3" fill="#ffffff" opacity="0.9"/>
+          <circle cx="75" cy="50" r="2.5" fill="#ffffff" opacity="0.85"/>
+          <circle cx="75" cy="30" r="2" fill="#ffffff" opacity="0.8"/>
+          <circle cx="98" cy="65" r="2.5" fill="#ffffff" opacity="0.85"/>
+          <circle cx="120" cy="65" r="2" fill="#ffffff" opacity="0.8"/>
+          <circle cx="52" cy="65" r="2.5" fill="#ffffff" opacity="0.85"/>
+          <circle cx="30" cy="65" r="2" fill="#ffffff" opacity="0.8"/>
+          <circle cx="63" cy="95" r="2.5" fill="#ffffff" opacity="0.85"/>
+          <circle cx="50" cy="115" r="2" fill="#ffffff" opacity="0.8"/>
+          <circle cx="87" cy="95" r="2.5" fill="#ffffff" opacity="0.85"/>
+          <circle cx="100" cy="115" r="2" fill="#ffffff" opacity="0.8"/>
+          <defs>
+            <linearGradient id="bottomStarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#173f6b"/>
+              <stop offset="50%" stop-color="#2563eb"/>
+              <stop offset="85%" stop-color="#67b0f0"/>
+              <stop offset="100%" stop-color="#dbeafe"/>
+            </linearGradient>
+            <filter id="bigStarShadow">
+              <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#022a4a" flood-opacity="0.4"/>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Concha espiral náutica esquerda inferior -->
+      <div class="bottom-shell-left">
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="44" fill="url(#shellLeftGrad)" opacity="0.9"/>
+          <path d="M50 50 m-35,0 a35,35 0 1,0 70,0 a35,35 0 1,0 -70,0" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <path d="M50 50 m-22,0 a22,22 0 1,0 44,0 a22,22 0 1,0 -44,0" stroke="rgba(255,255,255,0.7)" stroke-width="1.8"/>
+          <path d="M50 50 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" fill="#e0f2fe"/>
+          <defs>
+            <radialGradient id="shellLeftGrad">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="40%" stop-color="#38bdf8"/>
+              <stop offset="100%" stop-color="#0c4a6e"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Ramos de Corais e Algas Azuis e Prateados -->
+      <div class="bottom-corals-svg">
+        <svg viewBox="0 0 200 100" fill="none">
+          <path d="M120 100 C125 70, 135 45, 140 25 C142 18, 148 18, 150 25 C155 45, 160 70, 165 100" fill="#7dd3fc" opacity="0.75"/>
+          <path d="M145 100 C150 65, 160 40, 168 15 C170 10, 175 10, 177 15 C182 40, 185 70, 190 100" fill="#38bdf8" opacity="0.6"/>
+          <path d="M165 100 C170 75, 180 55, 188 30 C190 25, 195 25, 196 30 C198 55, 199 75, 200 100" fill="#0284c7" opacity="0.5"/>
+          <path d="M130 95 Q145 50 155 30" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+          <path d="M150 95 Q165 45 175 25" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTAINER PRINCIPAL INTERATIVO -->
+  <div class="app-container">
+
+    <!-- 1. TELA DO ENVELOPE (ESTILO DA IMAGEM) -->
+    <div id="envelope-screen" class="envelope-screen">
+      <div class="envelope-header">
+        <h2 class="title-convite">CONVITE ESPECIAL</h2>
+        <div class="title-sub-shine"></div>
+      </div>
+
+      <!-- O Envelope Azul Marinho / Royal -->
+      <div class="envelope-card-wrapper" id="envelope-trigger">
+        <div class="envelope-box">
+          <!-- Aba Superior que abre -->
+          <div class="envelope-flap top-flap" id="top-flap"></div>
+          
+          <!-- Bolsão do Envelope -->
+          <div class="envelope-pocket">
+            <div class="envelope-left"></div>
+            <div class="envelope-right"></div>
+            <div class="envelope-bottom"></div>
+          </div>
+
+          <!-- Carta prévia deslizando para fora na animação -->
+          <div class="letter-slip" id="letter-slip">
+            <div class="slip-header">✨ CONVITE ✨</div>
+            <div class="slip-date">19 DE DEZEMBRO &bull; 12:30h</div>
+          </div>
+
+          <!-- Lacre de Concha Prateada Perolizada com florzinha azul -->
+          <div class="envelope-seal-wrapper" id="seal-button">
+            <div class="shell-seal">
+              <svg viewBox="0 0 80 80" width="68" height="68" fill="none" class="seal-svg">
+                <defs>
+                  <linearGradient id="pearlSilverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="40%" stop-color="#e2e8f0"/>
+                    <stop offset="70%" stop-color="#cbd5e1"/>
+                    <stop offset="100%" stop-color="#94a3b8"/>
+                  </linearGradient>
+                  <filter id="sealGlow">
+                    <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.35"/>
+                  </filter>
+                </defs>
+                <path d="M40 70 C15 70, 8 45, 12 25 C15 10, 30 5, 40 5 C50 5, 65 10, 68 25 C72 45, 65 70, 40 70 Z" fill="url(#pearlSilverGrad)" stroke="#ffffff" stroke-width="1.8" filter="url(#sealGlow)"/>
+                <path d="M40 68 L40 6" stroke="#94a3b8" stroke-width="1.2"/>
+                <path d="M40 68 L24 12" stroke="#94a3b8" stroke-width="1.2"/>
+                <path d="M40 68 L56 12" stroke="#94a3b8" stroke-width="1.2"/>
+                <path d="M40 68 L14 28" stroke="#94a3b8" stroke-width="1"/>
+                <path d="M40 68 L66 28" stroke="#94a3b8" stroke-width="1"/>
+                <circle cx="28" cy="48" r="8" fill="#38bdf8" opacity="0.85"/>
+                <circle cx="28" cy="48" r="4" fill="#ffffff"/>
+              </svg>
+            </div>
+            <div class="seal-pulsing-ring"></div>
+          </div>
+        </div>
+
+        <!-- Instrução elegante de toque -->
+        <p class="envelope-hint">
+          <span class="finger-icon">✨</span> clique no envelope para abrir <span class="finger-icon">✨</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 2. CARTÃO PRINCIPAL DO CONVITE -->
+    <div id="invitation-card-screen" class="invitation-card-screen hidden">
+      <div class="card-inner">
+        <!-- Textura e brilhos do cartão -->
+        <div class="card-glass-shine"></div>
+        <div class="card-border-silver"></div>
+
+        <!-- Botão Voltar para ver o envelope -->
+        <button id="btn-back" class="btn-back" aria-label="Voltar para envelope">
+          ← Fechar envelope
+        </button>
+
+        <!-- Cabeçalho do Cartão -->
+        <div class="card-header">
+          <div class="seal-icon-mini">
+            <svg viewBox="0 0 50 50" width="36" height="36" fill="none">
+              <path d="M25 45 C10 45, 5 30, 8 16 C10 6, 20 3, 25 3 C30 3, 40 6, 42 16 C45 30, 40 45, 25 45 Z" fill="#e2e8f0" stroke="#0284c7" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <p class="tagline">VOCÊ É NOSSO CONVIDADO ESPECIAL</p>
+          <h1 class="celebration-title">Uma Celebração Inesquecível</h1>
+          <p class="theme-subtitle">Fundo do Mar &bull; Elegância &amp; Alegria</p>
+        </div>
+
+        <div class="divider-silver">
+          <span>&diams;</span>
+        </div>
+
+        <!-- Bloco de Data e Horário em Destaque -->
+        <div class="datetime-block">
+          <div class="date-col">
+            <span class="day-label">SEXTA-FEIRA</span>
+            <div class="big-date">
+              <span class="day-number">19</span>
+              <span class="month-name">DEZEMBRO</span>
+            </div>
+            <span class="year-label">2026</span>
+          </div>
+          <div class="time-col">
+            <div class="time-badge">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>12:30h</span>
+            </div>
+            <span class="time-sub">Pontualmente</span>
+          </div>
+        </div>
+
+        <!-- Informações do Local / Salão -->
+        <div class="venue-block">
+          <div class="venue-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <div class="venue-details">
+            <h3 class="venue-title">Summer Espaços de Festa</h3>
+            <p class="venue-address">Rua Capitão Felício Costa, nº 70</p>
+            <p class="venue-city">Mutuá – São Gonçalo / RJ</p>
+          </div>
+        </div>
+
+        <!-- Contagem Regressiva Interativa -->
+        <div class="countdown-card">
+          <p class="countdown-title">CONTAGEM REGRESSIVA</p>
+          <div class="countdown-boxes" id="countdown-timer">
+            <div class="cd-box">
+              <span id="days" class="cd-val">00</span>
+              <span class="cd-lbl">Dias</span>
+            </div>
+            <span class="cd-sep">:</span>
+            <div class="cd-box">
+              <span id="hours" class="cd-val">00</span>
+              <span class="cd-lbl">Horas</span>
+            </div>
+            <span class="cd-sep">:</span>
+            <div class="cd-box">
+              <span id="minutes" class="cd-val">00</span>
+              <span class="cd-lbl">Min</span>
+            </div>
+            <span class="cd-sep">:</span>
+            <div class="cd-box">
+              <span id="seconds" class="cd-val">00</span>
+              <span class="cd-lbl">Seg</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões de Ação Interativos -->
+        <div class="action-buttons-group">
+          <!-- Como Chegar (Google Maps / Waze) -->
+          <a href="https://www.google.com/maps/search/?api=1&query=Summer+Espa%C3%A7os+de+Festa+Rua+Capit%C3%A3o+Fel%C3%ADcio+Costa+70+Mutu%C3%A1+S%C3%A3o+Gon%C3%A7alo+RJ" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span>Como Chegar (GPS / Mapa)</span>
+          </a>
+
+          <!-- Salvar no Calendário -->
+          <a id="btn-add-calendar" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Festa+Summer+Espa%C3%A7os&dates=20261219T153000Z/20261219T213000Z&details=Tema:+Fundo+do+Mar+(Adulto).&location=Rua+Capit%C3%A3o+Fel%C3%ADcio+Costa,+n%C2%BA+70,+Mutu%C3%A1+%E2%80%93+S%C3%A3o+Gon%C3%A7alo/RJ&sf=true&output=xml" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+            </svg>
+            <span>Adicionar à Minha Agenda</span>
+          </a>
+        </div>
+
+        <footer class="card-footer">
+          <p>Esperamos por você para celebrar conosco esse momento tão especial!</p>
+          <div class="ocean-wave-line"></div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
