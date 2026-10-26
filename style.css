@@ -407,10 +407,19 @@ html, body {
 
 .slip-header {
   font-family: var(--font-title);
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
-  color: #1e3a8a;
+  color: #0284c7;
   font-weight: 700;
+}
+
+.slip-name {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #0c2d48;
+  margin: 2px 0;
 }
 
 .slip-date {
@@ -588,6 +597,16 @@ html, body {
   text-transform: uppercase;
   color: #64748b;
   font-weight: 500;
+}
+
+.personal-message {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.45;
+  color: #334155;
+  font-style: italic;
+  max-width: 380px;
+  margin: 12px auto 0;
 }
 
 .divider-silver {
@@ -841,6 +860,12 @@ html, body {
   font-style: italic;
   font-size: 15px;
   color: #475569;
+}
+
+.signature-mari {
+  margin-top: 6px;
+  font-size: 17px !important;
+  color: #0c4a6e !important;
 }
 
 .ocean-wave-line {
