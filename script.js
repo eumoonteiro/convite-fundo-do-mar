@@ -94,10 +94,46 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. CANVAS DE BOLHAS SUBAQUÁTICAS
+  // 3. MODAL DE SUGESTÕES DE PRESENTES
+  const btnOpenGifts = document.getElementById('btn-open-gifts');
+  const giftModal = document.getElementById('gift-modal');
+  const btnCloseGiftModal = document.getElementById('btn-close-gift-modal');
+  const giftModalBackdrop = document.getElementById('gift-modal-backdrop');
+
+  function openGiftModal() {
+    if (!giftModal) return;
+    giftModal.classList.remove('hidden');
+    giftModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGiftModal() {
+    if (!giftModal) return;
+    giftModal.classList.add('hidden');
+    giftModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (btnOpenGifts) {
+    btnOpenGifts.addEventListener('click', openGiftModal);
+  }
+  if (btnCloseGiftModal) {
+    btnCloseGiftModal.addEventListener('click', closeGiftModal);
+  }
+  if (giftModalBackdrop) {
+    giftModalBackdrop.addEventListener('click', closeGiftModal);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && giftModal && !giftModal.classList.contains('hidden')) {
+      closeGiftModal();
+    }
+  });
+
+  // 4. CANVAS DE BOLHAS SUBAQUÁTICAS
   initBubblesCanvas();
 
-  // 4. CONTAGEM REGRESSIVA PARA 19/12
+  // 5. CONTAGEM REGRESSIVA PARA 19/12
   initCountdown();
 });
 
